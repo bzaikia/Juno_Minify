@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * Author: Hieu Nguyen
+ */
+class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
+{
+    const PATH_HOST = 'juno_jscss/general/host';
+    const LOG_FILE = 'juno_minify.log';
+
+    /**
+     * @param $file
+     */
+    public function minify($file)
+    {
+        $fileUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . $file;
+        if ($filePath = $this->_getFilePath(Mage::getBaseDir() . DS . $file)) {
+            file_put_contents($filePath, file_get_contents($this->getMinifyFile($fileUrl)));
+            $this->log($filePath);
+        }
+    }
+
+    /**
+     * @param $file
+     * @return mixed|string
+     */
+    protected function _getFilePath($file)
+    {
+        if (strpos($file, '.css')) {
+            return str_replace('.css', '.junominify.css', $file);
+        }
+
+        if (strpos($file, '.js')) {
+            return str_replace('.css', '.junominify.js', $file);
+        }
+
+        return '';
+    }
+
+    /**
+     * @param $img
+     */
+    public function log($img)
+    {
+        $resource = Mage::getSingleton('core/resource');
+        /**
+         * @var $writeAdapter Magento_Db_Adapter_Pdo_Mysql
+         */
+        $writeAdapter = $resource->getConnection('core_write');
+        $data = array(
+            'path' => $img,
+            'hash' => md5_file($img)
+        );
+        $writeAdapter->delete($resource->getTableName('juno_minify'), $data);
+        $writeAdapter->update($resource->getTableName('juno_minify'), $data);
+        Mage::log($img, null, self::LOG_FILE);
+    }
+
+    /**
+     * @param $imageUrl
+     * @return string
+     */
+    public function getMinifyFile($imageUrl)
+    {
+        $host = Mage::getStoreConfig(self::PATH_HOST);
+        return 'http://' . $host . '?file=' . $imageUrl;
+    }
+}

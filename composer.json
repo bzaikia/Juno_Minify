@@ -1,0 +1,5 @@
+{
+    "name": "juno/minify",
+    "type": "magento-module",
+    "description": "Minify Css/js"
+}

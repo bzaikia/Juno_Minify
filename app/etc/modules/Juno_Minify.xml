@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Juno_Minify>
+            <active>true</active>
+            <codePool>local</codePool>
+                    </Juno_Minify>
+    </modules>
+</config>
