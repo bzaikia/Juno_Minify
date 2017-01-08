@@ -11,7 +11,7 @@ class Juno_Minify_Model_Observer
             return;
         }
         $jsPath = Mage::getBaseDir() . DS . 'js';
-        $stuff = array_merge($this->_getStuffPath(Mage::getBaseDir('skin')), $jsPath);
+        $stuff = array_merge($this->_getStuffPath(Mage::getBaseDir('skin')), $this->_getStuffPath($jsPath));
         foreach ($stuff as $file) {
             $file = array_shift($file);
             if ($minified = $this->_getMinifiedData($file)) {

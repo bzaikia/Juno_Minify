@@ -18,7 +18,7 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
         $fileUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . $file;
         if ($filePath = $this->getMinifiedFilePath(Mage::getBaseDir() . DS . $file)) {
             file_put_contents($filePath, file_get_contents($this->getMinifyFile($fileUrl)));
-            $this->log($filePath);
+            $this->log(Mage::getBaseDir() . DS . $file);
         }
     }
 
@@ -53,19 +53,19 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
             'path' => $img,
             'hash' => md5_file($img)
         );
-        $writeAdapter->delete($resource->getTableName('juno_minify'), $data);
+        $writeAdapter->delete($resource->getTableName('juno_minify'), array('md5_file' => md5($img)));
         $writeAdapter->insert($resource->getTableName('juno_minify'), $data);
         Mage::log($img, null, self::LOG_FILE);
     }
 
     /**
-     * @param $imageUrl
+     * @param $fileUrl
      * @return string
      */
-    public function getMinifyFile($imageUrl)
+    public function getMinifyFile($fileUrl)
     {
         $host = Mage::getStoreConfig(self::PATH_HOST);
-        return 'http://' . $host . '?file=' . $imageUrl;
+        return 'http://' . $host . '?file=' . $fileUrl;
     }
 
     /**
