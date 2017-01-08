@@ -54,7 +54,7 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
             'hash' => md5_file($img)
         );
         $writeAdapter->delete($resource->getTableName('juno_minify'), $data);
-        $writeAdapter->update($resource->getTableName('juno_minify'), $data);
+        $writeAdapter->insert($resource->getTableName('juno_minify'), $data);
         Mage::log($img, null, self::LOG_FILE);
     }
 
