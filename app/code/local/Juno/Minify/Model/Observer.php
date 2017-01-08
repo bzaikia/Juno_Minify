@@ -7,6 +7,9 @@ class Juno_Minify_Model_Observer
 {
     public function minifyStuff()
     {
+        if (!Mage::helper('juno_minify')->isEnable()) {
+            return;
+        }
         $stuff = array_merge($this->_getStuffPath(Mage::getBaseDir('skin')), $this->_getStuffPath(Mage::getBaseDir('media')));
         foreach ($stuff as $file) {
             $file = array_shift($file);

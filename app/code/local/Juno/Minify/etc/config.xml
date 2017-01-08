@@ -15,6 +15,11 @@
             <juno_minify>
                 <class>Juno_Minify_Block</class>
             </juno_minify>
+            <page>
+                <rewrite>
+                    <html_head>Juno_Minify_Block_Page_Html_Head</html_head>
+                </rewrite>
+            </page>
         </blocks>
         <helpers>
             <juno_minify>
