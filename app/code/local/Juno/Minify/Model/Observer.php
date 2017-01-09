@@ -38,7 +38,6 @@ class Juno_Minify_Model_Observer
                 if ($hashData['hash'] == md5_file($minifiedFile)) continue;
             }
             $result[] = $file;
-            break;
         }
 
         return $result;
