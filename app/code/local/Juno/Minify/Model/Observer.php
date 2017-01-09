@@ -32,11 +32,8 @@ class Juno_Minify_Model_Observer
             if (strpos($file, '.junominify.') !== false) {
                 continue;
             }
-            $minifiedFile = Mage::helper('juno_minify')->getMinifiedFile($file);
-            if ($minifiedFile) {
-                $hashData = $this->_getMinifiedData($file);
-                if ($hashData['hash'] == md5_file($minifiedFile)) continue;
-            }
+            $hashData = $this->_getMinifiedData($file);
+            if ($hashData['hash'] == md5_file($file)) continue;
             $result[] = $file;
         }
 
