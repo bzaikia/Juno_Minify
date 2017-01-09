@@ -44,7 +44,7 @@ class Juno_Minify_Block_Page_Html_Head extends Mage_Page_Block_Html_Head
                 $html .= sprintf($format, $mergedUrl, $params);
             } else {
                 foreach ($rows as $src) {
-                    if (in_array($src, Mage::helper('juno_minify')->getMinifiedStuff())) {
+                    if (Mage::helper('juno_minify')->isEnable() && in_array($src, Mage::helper('juno_minify')->getMinifiedStuff())) {
                         $src = Mage::helper('juno_minify')->getMinifiedFilePath($src);
                     }
                     $html .= sprintf($format, $src, $params);
