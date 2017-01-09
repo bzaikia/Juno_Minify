@@ -13,10 +13,6 @@ class Juno_Minify_Model_Observer
         $jsPath = Mage::getBaseDir() . DS . 'js';
         $stuff = array_merge($this->_getStuffPath(Mage::getBaseDir('skin')), $this->_getStuffPath($jsPath));
         foreach ($stuff as $file) {
-            $file = array_shift($file);
-            if ($minified = $this->_getMinifiedData($file)) {
-                if ($minified['hash'] == md5_file($file)) continue;
-            }
             $file = str_replace(Mage::getBaseDir() . DS, '', $file);
             Mage::helper('juno_minify')->minify($file);
         }
@@ -32,9 +28,17 @@ class Juno_Minify_Model_Observer
         $iterator = new RecursiveIteratorIterator($directory);
         $files = new RegexIterator($iterator, '/^.+\.(css|js)$/i', RecursiveRegexIterator::GET_MATCH);
         foreach ($files as $file) {
-            if (is_null(strpos($file, '.junominify'))) {
-                $result[] = $file;
+            $file = array_shift($file);
+            if (strpos($file, '.junominify.') !== false) {
+                continue;
             }
+            $minifiedFile = Mage::helper('juno_minify')->getMinifiedFile($file);
+            if ($minifiedFile) {
+                $hashData = $this->_getMinifiedData($file);
+                if ($hashData['hash'] == md5_file($minifiedFile)) continue;
+            }
+            $result[] = $file;
+            break;
         }
 
         return $result;

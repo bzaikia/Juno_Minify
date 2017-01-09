@@ -10,6 +10,7 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_FILE = 'juno_minify.log';
 
     protected $_minifiedStuff;
+
     /**
      * @param $file
      */
@@ -40,9 +41,9 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $img
+     * @param $file
      */
-    public function log($img)
+    public function log($file)
     {
         $resource = Mage::getSingleton('core/resource');
         /**
@@ -50,12 +51,13 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
          */
         $writeAdapter = $resource->getConnection('core_write');
         $data = array(
-            'path' => $img,
-            'hash' => md5_file($img)
+            'path' => $file,
+            'hash' => md5_file($this->getMinifiedFile($file))
         );
-        $writeAdapter->delete($resource->getTableName('juno_minify'), array('hash' => md5_file($img)));
+
+        $writeAdapter->delete($resource->getTableName('juno_minify'), $data);
         $writeAdapter->insert($resource->getTableName('juno_minify'), $data);
-        Mage::log($img, null, self::LOG_FILE);
+        Mage::log($file, null, self::LOG_FILE);
     }
 
     /**
@@ -89,13 +91,28 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * @param $normalFilePath
+     * @return bool
+     */
+    public function getMinifiedFile($normalFilePath)
+    {
+        if ((strpos($normalFilePath, ".css") !== false) && file_exists(str_replace('.css', '.junominify.css', $normalFilePath))) {
+            return str_replace('.css', '.junominify.css', $normalFilePath);
+        }
+
+        if ((strpos($normalFilePath, ".js") !== false) && file_exists(str_replace('.js', '.junominify.js', $normalFilePath))) {
+            return str_replace('.js', '.junominify.js', $normalFilePath);
+        }
+        return false;
+    }
+
+    /**
      * @param $item1
      */
     protected function _alterMinifiedStuff(&$item1)
     {
         $isSecure = Mage::app()->getStore()->isCurrentlySecure();
-        $item1 = str_replace(Mage::getBaseDir() . DS,  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB, $isSecure), $item1);
-
+        $item1 = str_replace(Mage::getBaseDir() . DS, Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB, $isSecure), $item1);
     }
 
     /**
