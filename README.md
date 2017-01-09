@@ -19,4 +19,6 @@ minified file: http://graftons.juno.is/js/lib/jquery/noconflict.junominify.js
 
 * It does not happen immediately after installing. It will be trigger nightly at 0AM by magento cron
 
+* when you update some file and want to re-minify those file, just trigger the cache flush via admin (select all item on cache manage page and flush them all)
+
 contact me for any support: hieu@junowebdesign.com
