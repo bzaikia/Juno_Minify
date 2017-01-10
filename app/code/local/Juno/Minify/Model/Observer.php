@@ -34,7 +34,7 @@ class Juno_Minify_Model_Observer
             }
             $hashData = $this->_getMinifiedData($file);
             $minifiedFile = Mage::helper('juno_minify')->getMinifiedFile($file);
-            if ($minifiedFile && !file_exists($minifiedFile)) {
+            if (!$minifiedFile) {
                 $result[] = $file;
                 continue;
             }
