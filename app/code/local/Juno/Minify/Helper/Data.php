@@ -111,7 +111,7 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
      */
     protected function _alterMinifiedStuff(&$item1)
     {
-        if (file_exists($item1)) {
+        if ($this->getMinifiedFile($item1) && file_exists($this->getMinifiedFile($item1))) {
             $isSecure = Mage::app()->getStore()->isCurrentlySecure();
             $item1 = str_replace(Mage::getBaseDir() . DS, Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB, $isSecure), $item1);
         }
