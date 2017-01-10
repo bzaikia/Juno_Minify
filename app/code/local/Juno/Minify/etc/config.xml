@@ -50,10 +50,10 @@
             <minify_css_js>
                 <schedule>
                     <cron_expr>0 0 * * *</cron_expr>
-                    <config_path>
-                        <model>juno_minify/observer::minifyStuff</model>
-                    </config_path>
                 </schedule>
+                <run>
+                    <model>juno_minify/observer::minifyStuff</model>
+                </run>
             </minify_css_js>
         </jobs>
     </crontab>
