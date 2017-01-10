@@ -10,6 +10,9 @@ class Juno_Minify_Model_Observer
         if (!Mage::helper('juno_minify')->isEnable()) {
             return;
         }
+        if (file_get_contents(Mage::getStoreConfig(Juno_Minify_Helper_Data::PATH_HOST)) != 'ok') {
+            return;
+        }
         $jsPath = Mage::getBaseDir() . DS . 'js';
         $stuff = array_merge($this->_getStuffPath(Mage::getBaseDir('skin')), $this->_getStuffPath($jsPath));
         foreach ($stuff as $file) {
