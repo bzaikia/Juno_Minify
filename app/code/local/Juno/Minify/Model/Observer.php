@@ -42,7 +42,7 @@ class Juno_Minify_Model_Observer
                 continue;
             }
 
-            if ($hashData['hash'] != md5_file($file)) {
+            if (!empty($hashData['hash']) && ($hashData['hash'] != md5_file($file))) {
                 $result[] = $file;
                 continue;
             }
