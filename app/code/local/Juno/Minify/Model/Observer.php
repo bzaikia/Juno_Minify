@@ -5,6 +5,9 @@
  */
 class Juno_Minify_Model_Observer
 {
+    /**
+     * start minifying
+     */
     public function minifyStuff()
     {
         if (!Mage::helper('juno_minify')->isEnable()) {
@@ -36,12 +39,15 @@ class Juno_Minify_Model_Observer
                 continue;
             }
             $hashData = $this->_getMinifiedData($file);
+
+            // if minified is not exist, then generate the minified one
             $minifiedFile = Mage::helper('juno_minify')->getMinifiedFile($file);
             if (empty($minifiedFile)) {
                 $result[] = $file;
                 continue;
             }
 
+            // if minified one is exist, but the original file is changed, then re-minify it
             if (!empty($hashData['hash']) && ($hashData['hash'] != md5_file($file))) {
                 $result[] = $file;
                 continue;
@@ -66,5 +72,32 @@ class Juno_Minify_Model_Observer
             ->where('path = ?', $path);
 
         return $writeAdapter->fetchRow($select);
+    }
+
+    public function clean()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $sql = $this->_getWriteAdapter()
+            ->select()->from($resource->getTableName('juno_minify'));
+        $result = $this->_getWriteAdapter()->fetchAll($sql);
+        foreach ($result as $item) {
+            if (!file_exists($item['path'])) {
+                $this->_getWriteAdapter()
+                    ->delete($resource->getTableName('juno_minify'), 'path = "' . $item['path'] . '"');
+            }
+        }
+    }
+
+    /**
+     * @return Magento_Db_Adapter_Pdo_Mysql
+     */
+    protected function _getWriteAdapter()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        /**
+         * @var $writeAdapter Magento_Db_Adapter_Pdo_Mysql
+         */
+        $writeAdapter = $resource->getConnection('core_write');
+        return $writeAdapter;
     }
 }

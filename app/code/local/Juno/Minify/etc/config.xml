@@ -44,6 +44,15 @@
                     <model>juno_minify/observer::minifyStuff</model>
                 </run>
             </minify_css_js>
+
+            <juno_minified_css_js_clean>
+                <schedule>
+                    <cron_expr>0 2 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>juno_image/observer::clean</model>
+                </run>
+            </juno_minified_css_js_clean>
         </jobs>
     </crontab>
 </config>

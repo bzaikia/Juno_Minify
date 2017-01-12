@@ -60,7 +60,6 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
 
         $writeAdapter->delete($resource->getTableName('juno_minify'), 'path = "'.$file.'"');
         $writeAdapter->insert($resource->getTableName('juno_minify'), $data);
-        Mage::log($file, null, self::LOG_FILE);
     }
 
     /**
