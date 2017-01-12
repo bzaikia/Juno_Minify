@@ -19,7 +19,7 @@ class Juno_Minify_Helper_Data extends Mage_Core_Helper_Abstract
         $fileUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . $file;
         if ($filePath = $this->getMinifiedFilePath(Mage::getBaseDir() . DS . $file)) {
             $str = file_get_contents($this->getMinifyFile($fileUrl));
-            if (strlen($str) > 1000) {
+            if (strlen($str) > 5) {
                 file_put_contents($filePath, $str);
                 $this->log(Mage::getBaseDir() . DS . $file);
             }
