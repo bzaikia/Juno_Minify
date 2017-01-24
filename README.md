@@ -1,6 +1,6 @@
 # Juno_Minify
 
-# config 
+# config (Configuration > General > Js/css minify)
 * enable/disable: on off the module
 * server: the external server that handle js/css minification.
 
